@@ -1,0 +1,17 @@
+# Dependencies & Environments
+node_modules/
+package-lock.json
+
+# Internal Tools & Scraping Archives (Not needed for static web preview)
+archive/
+tools/
+presentation/*.pptx
+presentation/screenshots/
+screenshots/
+
+# System and Editor Files
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
