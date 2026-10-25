@@ -24,3 +24,7 @@ screenshots/
 Thumbs.db
 .vscode/
 .idea/
+
+# Local Agent Workspace Customizations
+.agents/
+skills-lock.json
