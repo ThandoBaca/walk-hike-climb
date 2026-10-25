@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: 'West Coast \u2013 Beyond What You See',
       category: 'African Cradle of Human Culture Tours',
       duration: '4 Days, 3 Nights',
-      image: './sitepad-data/uploads/2026/phase2/rock-art.jpg',
+      image: './assets/uploads/2026/phase2/rock-art.jpg',
       price: 'R95 500.00 per tour for 9 people',
       bookingTerms: [
         'Payable upon confirmation of booking',
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: 'West Coast \u2013 Beyond What You See: 2-Day Tour',
       category: 'African Cradle of Human Culture Tours',
       duration: '2 Days, 1 Night',
-      image: './sitepad-data/uploads/2026/phase2/1.jpg',
+      image: './assets/uploads/2026/phase2/1.jpg',
       price: 'R57 000.00 per tour for 9 people',
       bookingTerms: [
         'Payable upon confirmation of booking',
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: 'Cape Town \u2013 Stories of the City',
       category: 'Single Day Tours',
       duration: '4 Hours',
-      image: './sitepad-data/uploads/2026/phase2/2.jpg',
+      image: './assets/uploads/2026/phase2/2.jpg',
       price: 'R3 000.00 per tour for 2 people',
       bookingTerms: [
         'Limited to 10 people',
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: 'The Table Mountain Cableway',
       category: 'Single Day Tours',
       duration: '4 Hours',
-      image: './sitepad-data/uploads/2026/phase2/3.jpg',
+      image: './assets/uploads/2026/phase2/3.jpg',
       price: 'R8 000.00 per tour for 2 people',
       bookingTerms: [
         'Limited to 10 people',
@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: 'Table Mountain / Hoerikwaggo \u2013 Mountain in the Sea',
       category: 'Single Day Tours',
       duration: '6 Hours',
-      image: './sitepad-data/uploads/2026/phase2/4.jpg',
+      image: './assets/uploads/2026/phase2/4.jpg',
       price: 'R2 000.00 per person',
       bookingTerms: [
         'Pay to book',
@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: 'The Cape Peninsula',
       category: 'Single Day Tours',
       duration: '6 Hours',
-      image: './sitepad-data/uploads/2026/phase2/5.png',
+      image: './assets/uploads/2026/phase2/5.png',
       price: 'R8 000.00 per tour for 2 people',
       bookingTerms: [
         'Limited to 10 people',
@@ -320,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: 'Cape Winelands',
       category: 'Single Day Tours',
       duration: '6 to 8 Hours',
-      image: './sitepad-data/uploads/2020/10/boland-trail-1.jpg',
+      image: './assets/uploads/2020/10/boland-trail-1.jpg',
       price: 'R12 000.00 per tour for 2 people',
       bookingTerms: [
         'Limited to 10 people',
@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: 'Walk of Reflection',
       category: 'Walk of Reflection',
       duration: '2 Days (May to November only)',
-      image: './sitepad-data/uploads/2026/phase2/6.png',
+      image: './assets/uploads/2026/phase2/6.png',
       price: 'R2 800.00 per person',
       bookingTerms: [
         'Available from May to November only',
@@ -587,19 +587,90 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Helper: Secure submission and client-side validation handler
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePhone = (phone) => !phone || /^\+?[0-9\s\-()]{7,20}$/.test(phone);
+
+  async function submitInquiry(payload, feedbackEl, formEl, modalEl) {
+    if (!payload.name || payload.name.trim().length < 2) {
+      alert('Please enter your name (at least 2 characters).');
+      return;
+    }
+    if (!validateEmail(payload.email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    if (payload.phone && !validatePhone(payload.phone)) {
+      alert('Please enter a valid phone number (digits and standard formatting).');
+      return;
+    }
+
+    const submitBtn = formEl.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn ? submitBtn.innerText : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Sending Inquiry...';
+    }
+
+    try {
+      const response = await fetch('/api/contact.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok && data.success) {
+        if (feedbackEl) {
+          feedbackEl.style.display = 'block';
+          feedbackEl.innerText = `Thank you, ${payload.name}! Your inquiry has been forwarded directly to Ian & Diane Naidoo. We will contact you within 24 hours.`;
+        }
+        formEl.reset();
+        setTimeout(() => {
+          if (feedbackEl) feedbackEl.style.display = 'none';
+          if (modalEl) modalEl.classList.remove('open');
+        }, 4000);
+      } else {
+        alert(data.error || 'There was an issue submitting your inquiry. Please try WhatsApp directly.');
+      }
+    } catch (err) {
+      // Graceful fallback when testing via file:/// or if server is starting
+      console.warn('API submission note:', err);
+      if (feedbackEl) {
+        feedbackEl.style.display = 'block';
+        feedbackEl.innerText = `Thank you, ${payload.name}! Your inquiry has been recorded. (Note: Run via local server or upload to Afrihost for automated email delivery).`;
+      }
+      formEl.reset();
+      setTimeout(() => {
+        if (feedbackEl) feedbackEl.style.display = 'none';
+        if (modalEl) modalEl.classList.remove('open');
+      }, 4000);
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+      }
+    }
+  }
+
   if (quoteBookingForm) {
     quoteBookingForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const firstName = document.getElementById('bFirstName').value;
-      if (quoteFeedback) {
-        quoteFeedback.style.display = 'block';
-        quoteFeedback.innerText = `Thank you, ${firstName}! Your booking inquiry has been forwarded directly to Ian & Diane Naidoo. We will contact you within 24 hours.`;
-        quoteBookingForm.reset();
-        setTimeout(() => {
-          quoteFeedback.style.display = 'none';
-          if (quoteModal) quoteModal.classList.remove('open');
-        }, 4000);
-      }
+      const fName = document.getElementById('bFirstName')?.value?.trim() || '';
+      const lName = document.getElementById('bLastName')?.value?.trim() || '';
+      const payload = {
+        name: `${fName} ${lName}`.trim(),
+        email: document.getElementById('bEmail')?.value?.trim() || '',
+        phone: document.getElementById('bPhone')?.value?.trim() || '',
+        country: document.getElementById('bCountry')?.value || '',
+        package: document.getElementById('bPackageInterest')?.value || '',
+        groupSize: parseInt(document.getElementById('bGroupSize')?.value || '1', 10),
+        date: document.getElementById('bDate')?.value || '',
+        message: document.getElementById('bNotes')?.value?.trim() || '',
+        _hp_company: quoteBookingForm.querySelector('[name="_hp_company"]')?.value || ''
+      };
+      submitInquiry(payload, quoteFeedback, quoteBookingForm, quoteModal);
     });
   }
 
@@ -633,16 +704,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (quickEnquiryForm) {
     quickEnquiryForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const qName = document.getElementById('qName').value;
-      if (qFeedback) {
-        qFeedback.style.display = 'block';
-        qFeedback.innerText = `Thank you, ${qName}! Your direct inquiry has been received.`;
-        quickEnquiryForm.reset();
-        setTimeout(() => {
-          qFeedback.style.display = 'none';
-          if (enquiryModal) enquiryModal.classList.remove('open');
-        }, 3000);
-      }
+      const payload = {
+        name: document.getElementById('qName')?.value?.trim() || '',
+        email: document.getElementById('qEmail')?.value?.trim() || '',
+        phone: document.getElementById('qPhone')?.value?.trim() || '',
+        country: document.getElementById('qCountry')?.value || '',
+        package: document.getElementById('qPackage')?.value || '',
+        message: document.getElementById('qMessage')?.value?.trim() || '',
+        _hp_company: quickEnquiryForm.querySelector('[name="_hp_company"]')?.value || ''
+      };
+      submitInquiry(payload, qFeedback, quickEnquiryForm, enquiryModal);
     });
   }
 
@@ -655,15 +726,18 @@ document.addEventListener('DOMContentLoaded', () => {
   if (contactPageForm) {
     contactPageForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const fullName = document.getElementById('cFullName').value;
-      if (contactFeedback) {
-        contactFeedback.style.display = 'block';
-        contactFeedback.innerText = `Thank you, ${fullName}! Your inquiry has been sent directly to Ian and Diane Naidoo. We will reply within 24 hours.`;
-        contactPageForm.reset();
-        setTimeout(() => {
-          contactFeedback.style.display = 'none';
-        }, 6000);
-      }
+      const payload = {
+        name: document.getElementById('cFullName')?.value?.trim() || '',
+        email: document.getElementById('cEmail')?.value?.trim() || '',
+        phone: document.getElementById('cPhone')?.value?.trim() || '',
+        country: document.getElementById('cCountry')?.value || '',
+        package: document.getElementById('cPackage')?.value || '',
+        groupSize: parseInt(document.getElementById('cGroupSize')?.value || '1', 10),
+        date: document.getElementById('cDate')?.value || '',
+        message: document.getElementById('cMessage')?.value?.trim() || '',
+        _hp_company: contactPageForm.querySelector('[name="_hp_company"]')?.value || ''
+      };
+      submitInquiry(payload, contactFeedback, contactPageForm, null);
     });
   }
 

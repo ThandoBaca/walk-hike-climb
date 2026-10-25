@@ -2,16 +2,25 @@
 node_modules/
 package-lock.json
 
-# Internal Tools & Scraping Archives (Not needed for static web preview)
+# Environment variables & Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local Testing & Logs
+test_emails/
+logs/
+*.log
+
+# Internal Tools & Scraping Archives
 archive/
-tools/
-presentation/*.pptx
-presentation/screenshots/
+presentation/
 screenshots/
 
-# System and Editor Files
+# System & Editor Files
 .DS_Store
 Thumbs.db
-*.log
 .vscode/
 .idea/

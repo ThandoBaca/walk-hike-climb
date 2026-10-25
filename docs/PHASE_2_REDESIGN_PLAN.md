@@ -1,4 +1,4 @@
-# Walk Hike Climb (WHC / SRT) — Phase 2 Redesign & Frontend Design Plan
+﻿# Walk Hike Climb (WHC / SRT) — Phase 2 Redesign & Frontend Design Plan
 
 > **Document Type:** Master Implementation & Architectural Specification  
 > **Client:** Walk Hike Climb (Pty) Ltd — Cape Town, South Africa  
@@ -145,10 +145,10 @@ Detail Modals     - Juliet                   - Winter (B&W)    (Map Removed)
 - **Catchphrase / Tagline:** *"Live the experience, leave with the story"*.
 - **Visual Presentation:** Clean text card positioned over an unmasked, natural photo carousel.
 - **Carousel Slides:**
-  1. *Table Mountain Summit & Atlantic View* (`sitepad-data/uploads/2020/10/Looking-at-the-iconic-Upper-Cable-Station.jpg`)
+  1. *Table Mountain Summit & Atlantic View* (`assets/uploads/2020/10/Looking-at-the-iconic-Upper-Cable-Station.jpg`)
   2. *Boulders Beach African Penguins & False Bay Coastal Rocks*
-  3. *Diepkloof Rock Art & San Heritage* (`sitepad-data/uploads/2020/10/7-Drakensburg-Ladder-2019.jpg`)
-  4. *Cape Peninsula & Chapman's Peak Coastal Vista* (`sitepad-data/uploads/2020/10/Looking-at-Table-Mountain-from-BoKaap.jpg`)
+  3. *Diepkloof Rock Art & San Heritage* (`assets/uploads/2020/10/7-Drakensburg-Ladder-2019.jpg`)
+  4. *Cape Peninsula & Chapman's Peak Coastal Vista* (`assets/uploads/2020/10/Looking-at-Table-Mountain-from-BoKaap.jpg`)
 - **Exclusions:**
   - **Removed:** Red/maroon filter over mountain photography.
   - **Removed:** *"Explore packages"* and *"Speak with Ian & Diane"* hero buttons.

@@ -1,4 +1,4 @@
-# Walk Hike Climb (WHC / SRT) — Redesign
+﻿# Walk Hike Climb (WHC / SRT) — Redesign
 
 A responsive, high-performance static website redesign for **Walk Hike Climb (Pty) Ltd**, based in Goodwood, Cape Town, South Africa.
 
@@ -10,7 +10,7 @@ walk-hike-climb-redesign/
 ├── index.html                   # Main production website entrypoint
 ├── style.css                    # Responsive custom design system (Brand guidelines compliant)
 ├── app.js                       # Interactive filtering, drawer modal, and navigation logic
-├── sitepad-data/                # Optimized site images, logo assets, and photos
+├── assets/                # Optimized site images, logo assets, and photos
 │
 ├── presentation/                # Pitch deliverables and presentation materials
 │   ├── Walk_Hike_Climb_Website_Redesign_Showcase.pptx

@@ -1,5 +1,8 @@
 {
-  "dependencies": {
-    "playwright": "^1.62.1"
+  "name": "walk-hike-climb-redesign",
+  "version": "2.0.0",
+  "description": "Walk Hike Climb (WHC / SRT) multi-page website redesign",
+  "scripts": {
+    "dev": "node api/dev_server.js"
   }
 }
