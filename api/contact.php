@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 // Configuration
 $TEST_MODE = true; // Set to false when deploying live to Afrihost
-$RECIPIENT_EMAIL = 'walkhikeclimb@gmail.com';
+$RECIPIENT_EMAIL = 'thandob83@gmail.com';
 $SITE_NAME = 'Walk Hike Climb (SRT)';
 $RATE_LIMIT_FILE = __DIR__ . '/../logs/rate_limit.json';
 $LOGS_DIR = __DIR__ . '/../test_emails';

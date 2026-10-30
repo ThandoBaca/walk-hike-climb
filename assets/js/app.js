@@ -613,18 +613,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const response = await fetch('/api/contact.php', {
+      // Send test submissions directly to thandob83@gmail.com via FormSubmit AJAX
+      const response = await fetch('https://formsubmit.co/ajax/thandob83@gmail.com', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          ...payload,
+          _subject: `[Demo Inquiry] ${payload.package || 'General'} - ${payload.name}`
+        })
       });
 
       const data = await response.json().catch(() => ({}));
 
-      if (response.ok && data.success) {
+      if (response.ok) {
         if (feedbackEl) {
           feedbackEl.style.display = 'block';
-          feedbackEl.innerText = `Thank you, ${payload.name}! Your inquiry has been forwarded directly to Ian & Diane Naidoo. We will contact you within 24 hours.`;
+          feedbackEl.innerText = `Thank you, ${payload.name}! Your demo test inquiry has been sent to thandob83@gmail.com.`;
         }
         formEl.reset();
         setTimeout(() => {
@@ -632,14 +639,13 @@ document.addEventListener('DOMContentLoaded', () => {
           if (modalEl) modalEl.classList.remove('open');
         }, 4000);
       } else {
-        alert(data.error || 'There was an issue submitting your inquiry. Please try WhatsApp directly.');
+        alert(data.message || 'There was an issue submitting your inquiry. Please try again.');
       }
     } catch (err) {
-      // Graceful fallback when testing via file:/// or if server is starting
       console.warn('API submission note:', err);
       if (feedbackEl) {
         feedbackEl.style.display = 'block';
-        feedbackEl.innerText = `Thank you, ${payload.name}! Your inquiry has been recorded. (Note: Run via local server or upload to Afrihost for automated email delivery).`;
+        feedbackEl.innerText = `Thank you, ${payload.name}! Your inquiry has been recorded.`;
       }
       formEl.reset();
       setTimeout(() => {
